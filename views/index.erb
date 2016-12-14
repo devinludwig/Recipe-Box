@@ -1,0 +1,9 @@
+<h1>Welcome to Haley's Recipe Box!!!</h1>
+<ul><% Recipe.all.each do |recipe| %>
+  <li><a href="/recipe/<%= recipe.id %>"><%= recipe.name %></a></li>
+  <% end %>
+</ul>
+<form class="form-group" action="/new_recipe" method="post">
+  <input name="name">
+  <button type="submit">Create Recipe</button>
+</form>

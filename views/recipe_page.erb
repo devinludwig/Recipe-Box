@@ -1,0 +1,29 @@
+<h1><%= @recipe.name %></h1>
+
+<h3>How to make <%= @recipe.name %> </h3>
+
+<% if @recipe.ingredients.any?() %>
+  <p>You will need these ingredients: </p>
+  <ul>
+    <% @recipe.ingredients.each do |ingredient| %>
+      <li><%= ingredient.text %></li>
+    <% end %>
+  </ul>
+  <p>Follow these intstructions:</p>
+  <ul>
+    <% @recipe.instructions.each do |instruction| %>
+      <li><%= instruction.text %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p> There isn't a recipe for this item yet! </p>
+  <form action="/new_instruction" method="post">
+    <input name="new_instruction">
+    <button type="submit">Add Instructions</button>
+  </form>
+    <form action="/new_ingredient" method="post">
+      <input name="new_ingredient" placeholder = 'add an ingredient'>
+      <input name="new_amount" placeholder = 'add an amount'>
+      <button type="submit">Add Ingredient and amount</button>
+  </form>
+<% end %>
