@@ -5,25 +5,24 @@
 <% if @recipe.ingredients.any?() %>
   <p>You will need these ingredients: </p>
   <ul>
-    <% @recipe.ingredients.each do |ingredient| %>
-      <li><%= ingredient.text %></li>
+    <% @recipe.measurements.each do |measurement| %>
+      <li><%= measurement.ingredient.text %>, <%= measurement.amount %></li>
     <% end %>
   </ul>
-  <p>Follow these intstructions:</p>
-  <ul>
-    <% @recipe.instructions.each do |instruction| %>
-      <li><%= instruction.text %></li>
+  <p>Follow these instructions:</p>
+  <ol>
+    <% @recipe.instructions_recipes.each do |instructions_recipes| %>
+      <li><%= instructions_recipes.instruction.text %></li>
     <% end %>
-  </ul>
-<% else %>
-  <p> There isn't a recipe for this item yet! </p>
-  <form action="/new_instruction" method="post">
-    <input name="new_instruction">
-    <button type="submit">Add Instructions</button>
-  </form>
-    <form action="/new_ingredient" method="post">
-      <input name="new_ingredient" placeholder = 'add an ingredient'>
-      <input name="new_amount" placeholder = 'add an amount'>
-      <button type="submit">Add Ingredient and amount</button>
-  </form>
+  </ol>
 <% end %>
+  <p> There isn't a recipe for this item yet! </p>
+  <form action="/new_instruction/<%= @recipe.id %>" method="post">
+    <input name="new_instruction" placeholder="Instruction">
+    <button type="submit">Add Instruction</button>
+  </form>
+  <form action="/new_ingredient/<%= @recipe.id %>" method="post">
+    <input name="new_ingredient" placeholder = 'add an ingredient'>
+    <input name="new_amount" placeholder = 'add an amount'>
+    <button type="submit">Add Ingredient</button>
+  </form>
