@@ -1,6 +1,5 @@
 require("bundler/setup")
 Bundler.require(:default)
-require('pry')
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
@@ -9,7 +8,7 @@ get('/') do
 end
 
 post('/new_recipe') do
-Recipe.new({:name => params.fetch('name')})
+  Recipe.create({:name => params.fetch('name')})
   redirect to('/')
 end
 
@@ -29,5 +28,20 @@ end
 post('/new_instruction/:id') do
   @recipe = Recipe.find(params.fetch('id'))
   @recipe.instructions.push(Instruction.create({:text => params.fetch("new_instruction")}))
+  redirect to ("/recipe/#{@recipe.id}")
+end
+
+post('/new_tags/:id') do
+  @recipe = Recipe.find(params.fetch('id'))
+  if params.keys.include?('tag')
+    tags = params.fetch('tag')
+    @recipe.update({:tag_ids => tags})
+  end
+    redirect to ("/recipe/#{@recipe.id}")
+end
+
+post('/add_tag/:id') do
+  @recipe = Recipe.find(params.fetch('id'))
+  @recipe.tags.push(Tag.create({:text => params.fetch('new_tag')}))
   redirect to ("/recipe/#{@recipe.id}")
 end

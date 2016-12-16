@@ -1,8 +1,7 @@
 <h1><%= @recipe.name %></h1>
-
+<div class="well">
 <h3>How to make <%= @recipe.name %> </h3>
-
-<% if @recipe.ingredients.any?() %>
+<% if @recipe.ingredients.any? or @recipe.instructions.any? %>
   <p>You will need these ingredients: </p>
   <ul>
     <% @recipe.measurements.each do |measurement| %>
@@ -15,14 +14,37 @@
       <li><%= instructions_recipes.instruction.text %></li>
     <% end %>
   </ol>
+<% else %>
+<p> There isn't a recipe for this item yet! </p>
 <% end %>
-  <p> There isn't a recipe for this item yet! </p>
-  <form action="/new_instruction/<%= @recipe.id %>" method="post">
-    <input name="new_instruction" placeholder="Instruction">
-    <button type="submit">Add Instruction</button>
-  </form>
-  <form action="/new_ingredient/<%= @recipe.id %>" method="post">
-    <input name="new_ingredient" placeholder = 'add an ingredient'>
-    <input name="new_amount" placeholder = 'add an amount'>
-    <button type="submit">Add Ingredient</button>
-  </form>
+</div>
+<form action="/new_instruction/<%= @recipe.id %>" method="post">
+  <input name="new_instruction" placeholder="Instruction">
+  <button type="submit">Add Instruction</button>
+</form>
+<form action="/new_ingredient/<%= @recipe.id %>" method="post">
+  <input name="new_ingredient" placeholder = 'add an ingredient'>
+  <input name="new_amount" placeholder = 'add an amount'>
+  <button type="submit">Add Ingredient</button>
+</form>
+<br> <br>
+<p>Current Tags: <% @recipe.tags.each do |tag| %>
+  <span class="well"><%= tag.text %></span>
+  <% end %>
+</p>
+<form class="well form-group" action="/new_tags/<%= @recipe.id %>" method="post">
+  <% if Tag.all.any? %>
+    <h3>Choose from the existing recipe tags to classify your recipe:</h3>
+    <% Tag.all.each do |tag| %>
+        <input type="checkbox" value="<%= tag.id %>" name="tag[]"> <%= tag.text %>
+    <% end %>
+  <% end %>
+  <button type="submit">Assign Tags</button>
+</form>
+<form class="well form-group" action="/add_tag/<%= @recipe.id %>" method="post">
+  <h3>Add a new tag below:</h3>
+  <input type="text" name="new_tag" placeholder="New Tag">
+  <button type="submit">Add Tag</button>
+</form>
+
+<a href="/"><h2>Return to Recipe List</h2></a>
